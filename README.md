@@ -69,7 +69,7 @@ docker inspect whoami
 ```
 
 ini akan memberikan seluruh informasi mengenai container `whoami`. IP Addressnya adalah `170.17.0.2`
-![IP Address](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![IP Address](asset/inspect.png)
 Atau bisa juga dengan
 
 ```
@@ -77,7 +77,7 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' who
 
 ```
 
-![IP Address](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![IP Address](asset/IPAddress2.png)
 
 ## Isi Data container `whoami`
 
@@ -99,9 +99,9 @@ lalu cek directorynya
 ls
 ```
 
-![IP Address](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-`sh`
-![IP Address](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![IP Address](asset/data1.png)
+pada `sh`
+![IP Address](asset/data2.png)
 
 ## Image pada container `whoami`
 
@@ -109,4 +109,5 @@ ls
 docker inspect -f '{{.Config.Image}}' whoami
 ```
 
-![IP Address](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![IP Address](asset/image.png)
+![IP Address](asset/Container.png)
