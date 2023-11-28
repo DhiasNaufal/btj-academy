@@ -1,0 +1,6 @@
+all:
+  vars:
+    docker-tag: latest
+  hosts:
+    btj-academy:
+      ansible_host: btj.academy.bangunindo.io

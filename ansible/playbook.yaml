@@ -1,0 +1,11 @@
+- name: Menjalankan container - Dhias
+  hosts: btj-academy
+  become: true
+  tasks:
+    - docker_container:
+        name: ubuntu-ansible
+        image: "py-running"
+        interactive: true
+        tty: true
+        ports:
+          - "8081"
