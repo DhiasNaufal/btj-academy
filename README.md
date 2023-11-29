@@ -1,3 +1,129 @@
+# Simple Task 2
+
+1. Clone Example App
+
+```bash
+git clone https://github.com/rrw-bangunindo/btj-academy.git
+```
+
+2. Menambahkan route dan custom port `8080`
+
+```python
+
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def hello_world():
+    return 'Hello, Docker!'
+
+@app.route('/page2')
+def about():
+    return 'Ini page ke 2'
+
+@app.route('/page3')
+def contact():
+    return 'ini page ke 3'
+
+if __name__ == '__main__':
+    app.run(debug=True,host='0.0.0.0', port=8080)
+```
+
+3. siapkan app tersebut ke dalam sebuah folder yang sudah berisikan `inventory.yaml` dan `playbook.yaml` untuk dibuatkan sebuah docker container dengan ansible didalamnya di local
+
+```lua
+project-root/
+|-- Dockerfile <--local ansible
+|-- inventory.yaml
+|-- playbook.yaml
+|-- app/
+|  |-- app.py
+|  |-- requirements.txt
+|  |-- Dockerfile <-- remote image
+```
+
+4. Siapkan task dalam playbook
+
+```yaml
+- name: Simple Task 2 - Dhias Muhammad Naufal
+  hosts: btj-academy
+  become: true
+  vars:
+    local_directory: ./app/
+    remote_directory: /home/ubuntu/my_directory
+  tasks:
+    - name: Ensure the destination directory exists
+      ansible.builtin.file:
+        path: "/home/dhiasmuhammadnaufal/simple-task"
+        state: directory
+
+    - name: Copy Local Docker File ke Remote server
+      copy:
+        src: "./app/"
+        dest: "/home/dhiasmuhammadnaufal/simple-task"
+
+    - name: build container image
+      docker_image:
+        name: simple-task-2-dhias
+        source: build
+        build:
+          path: /home/dhiasmuhammadnaufal/simple-task/
+        state: present
+
+    - docker_container:
+        name: ubuntu-ansible
+        image: "simple-task-2-dhias"
+        interactive: true
+        tty: true
+        ports:
+          - "8080"
+```
+
+5. Build Ansible Image local
+
+```bash
+docker build -t ansi-imge .
+```
+
+6. Jalankan container ansible local
+
+```bash
+docker run -it -d -v C:/Users/ASUS\.ssh\:/root/.ssh/ --name ansible ansi-img
+```
+
+7. Masuk ke dalam running container
+
+```bash
+docker exec -it remote-task1 sh
+```
+
+8. Install openssh
+
+```bash
+apk add openssh
+```
+
+9. Jalankan Ansible
+
+```bash
+ansible-playbook -i inventory.yaml playbook.yaml --user dhiasmuhammadnaufal
+```
+
+10. Cek apakah semua task sudah berjalan <br>
+    ![IP Address](asset/simple-task-2.png) <br>
+11. Cek running container pada remote server
+    ![IP Address](asset/running%20cintainer.png)
+12. Cek port pada browser
+
+```WWW
+http://10.184.0.100:49197/
+http://btj-academy.bangunindo.io:49197/
+http://btj-academy.bangunindo.io:49197/page2
+http://btj-academy.bangunindo.io:49197/page3
+```
+
+![IP Address](asset/port.png)
+
 # Simple Task - Ansible
 
 1. Konfigurasi ansible pada docker
@@ -49,7 +175,7 @@ all:
 4. Mebuat container dari Docker Image yang sudah terinstall ansible
 
 ```bash
-docker run -it -d -v C:\Users\USER\.ssh\:/root.ssh/ --name <nama container> <nama image>
+docker run -it -d -v C:\Users\USER\.ssh\:/root/.ssh/ --name <nama container> <nama image>
 ```
 
 5. Akses container yang sudah running pada docker

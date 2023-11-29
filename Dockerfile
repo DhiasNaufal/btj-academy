@@ -1,7 +1,9 @@
-FROM python:3.9-alpine
+FROM ubuntu:latest
 
-RUN apk update && apk add build-base libffi-dev
-
+# Update package lists and install Python
+RUN apt-get update && \
+    apt-get install -y python3
+    
 RUN pip3 install ansible
 
 WORKDIR /app
